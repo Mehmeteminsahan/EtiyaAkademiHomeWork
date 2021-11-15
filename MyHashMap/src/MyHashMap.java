@@ -69,7 +69,9 @@ public class MyHashMap<K, V> {
 			System.out.print("{");
 			for (int i = 0; i < myHashMap.length; i++) {
 				System.out.print(myHashMap[i][0] + "=" + myHashMap[i][1]);
-				System.out.print(",");
+				if(myHashMap.length-1!=i) {
+					System.out.print(",");
+				}
 			}
 			System.out.println("}");
 		}
