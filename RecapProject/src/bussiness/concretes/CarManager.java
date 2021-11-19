@@ -14,21 +14,26 @@ import entities.concretes.Car;
 
 public class CarManager implements CarService{
 	private CarRepository carRepository;
+	
 	public CarManager(CarRepository carRepository) {
 		this.carRepository=carRepository;
 	}
+	
 	@Override
 	public DataResult<List<Car>> getAll() {
 		return new SuccessDataResult<List<Car>>(this.carRepository.getAll());
 	}
+	
 	@Override
 	public Result add(Car car) {
+		
 		this.carRepository.add(car);
 		return new SuccessResult("Eklendi");
 		
 	}
 	@Override
 	public Result delete(int id) {
+		//Car car=this.carRepository.getAll().stream().; arastır
 		int counter=0;
 		for (Car car : this.carRepository.getAll()) {
 			if(car.getId()==id) {
@@ -44,6 +49,7 @@ public class CarManager implements CarService{
 	}
 	@Override
 	public Result update(int id, Car car) {
+		
 		int counter=0;
 		for (Car item : this.carRepository.getAll()) {
 			if(item.getId()==id) {
@@ -59,6 +65,7 @@ public class CarManager implements CarService{
 	}
 	@Override
 	public DataResult<Car> getById(int id) {
+		
 		int counter=0;
 		for (Car item : this.carRepository.getAll()) {
 			if(item.getId()==id) {
@@ -67,9 +74,8 @@ public class CarManager implements CarService{
 			
 			counter++;
 			
-			
 		}
-		return null;
+		return new ErrorDataResult<Car>(null , "Araba bulunamadı");
 		
 	}
 	
