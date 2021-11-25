@@ -1,13 +1,12 @@
-package com.etiya.rentACar.core.utilities.mapping;
+package com.etiya.rentACarSpring.core.utilities.mapping;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
-public class ModelMapperManager implements ModelMapperService {
+public class ModelMapperManager implements ModelMapperService{
 
 	private ModelMapper modelMapper;
 	
@@ -20,7 +19,7 @@ public class ModelMapperManager implements ModelMapperService {
 	@Override
 	public ModelMapper forDto() {
 		this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-	return modelMapper; 
+		return modelMapper;
 	}
 
 	@Override
