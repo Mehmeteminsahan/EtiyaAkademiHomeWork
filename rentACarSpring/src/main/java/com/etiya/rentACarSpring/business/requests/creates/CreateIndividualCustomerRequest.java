@@ -18,8 +18,6 @@ public class CreateIndividualCustomerRequest {
 	//@NotNull
 	//private int individualCustomerId;
 
-	@NotNull
-	private int userId;
 
 	@NotNull
 	private String email;

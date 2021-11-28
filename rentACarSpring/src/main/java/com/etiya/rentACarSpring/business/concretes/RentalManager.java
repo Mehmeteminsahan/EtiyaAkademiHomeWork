@@ -62,12 +62,6 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
 		
-		/*Rental rental = this.getUpdatedRental(updateRentalRequest).getData();
-
-        this.rentalDao.save(rental);
-
-        return new SuccessResult(Messages.RentalUpdated);*/
-		
 		RentalDetail result= this.rentalDao.getRentalDetails(updateRentalRequest.getRentalId());
 	
 		
