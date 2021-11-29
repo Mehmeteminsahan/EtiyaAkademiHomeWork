@@ -32,6 +32,6 @@ public class UpdateCreditCardRequest {
 	private String cvv;
 	
 	@NotNull
-	private int individualCustomerId;
+	private int userId;
 
 }

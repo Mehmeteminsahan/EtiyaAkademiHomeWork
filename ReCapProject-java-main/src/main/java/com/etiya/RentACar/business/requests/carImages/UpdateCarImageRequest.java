@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateCarImageRequest {
 	
-	private int id;
+	private int imageId;
 	
 
 	private int carId;

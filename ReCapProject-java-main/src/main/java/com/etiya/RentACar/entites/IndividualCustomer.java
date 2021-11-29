@@ -37,6 +37,5 @@ public class IndividualCustomer extends User {
 	@OneToMany(mappedBy = "individualCustomer")
 	private List<Rental> rentals;
 	
-	@OneToMany(mappedBy="individualCustomer")
-	private List<CreditCard> creditCards;
+	
 }	

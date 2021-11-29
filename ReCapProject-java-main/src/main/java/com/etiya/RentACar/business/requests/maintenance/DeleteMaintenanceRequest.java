@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class DeleteMaintenanceRequest {
 
 
-	private int id;
+	private int maintenanceId;
 	
 }

@@ -13,12 +13,15 @@ import com.etiya.RentACar.core.utilities.results.Result;
 import com.etiya.RentACar.entites.CarImage;
 
 public interface CarImageService {
-	
+
 	DataResult<List<CarImagesSearchListDto>> getAll();
+
 	Result add(CreateCarImageRequest createCarImageRequest) throws IOException;
+
 	Result update(UpdateCarImageRequest updateCarImageRequest) throws IOException;
+
 	Result delete(DeleteCarImagesRequest deleteCarImagesRequest) throws IOException;
-	DataResult<List<CarImagesDto>> CarImagesByCarId(int carId);
-	Result checkIfCarImageExist(int carId);
-	List<CarImage> getCarImageListByCarId(int carId);
+
+	DataResult<List<CarImagesDto>> getCarImageByCarId(int carId);
+
 }

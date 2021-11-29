@@ -55,7 +55,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
-		Result result=BusinessRules.run(checkUserExists(updateIndividualCustomerRequest.getId()));
+		Result result=BusinessRules.run(checkUserExists(updateIndividualCustomerRequest.getUserId()));
 		if (result!=null) {
 			return result;
 		}

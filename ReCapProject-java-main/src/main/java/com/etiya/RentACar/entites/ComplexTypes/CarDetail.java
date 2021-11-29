@@ -1,9 +1,5 @@
 package com.etiya.RentACar.entites.ComplexTypes;
 
-import java.util.List;
-
-import com.etiya.RentACar.entites.CarImage;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

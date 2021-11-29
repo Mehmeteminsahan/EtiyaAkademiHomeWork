@@ -18,6 +18,6 @@ public class CarDetailDto {
 	private int dailyPrice;
 	private int modelYear;
 	private String description;
-    //private List<CarImageDetail> carImageDetail;
-	private List<String> imagePaths;
+    private List<CarImagesDto> carImagesDetail;
+	//private List<String> imagePaths;
 }

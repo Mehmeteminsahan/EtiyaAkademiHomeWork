@@ -38,8 +38,8 @@ public class CreditCard {
 	
 	@ManyToOne
 	@JsonIgnore
-	@JoinColumn(name = "individual_customer_id")
-	private IndividualCustomer individualCustomer;
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	
 }

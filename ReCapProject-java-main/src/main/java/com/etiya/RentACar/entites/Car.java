@@ -47,7 +47,7 @@ public class Car {
 	private Color color;
 	
 	@Column(name="min_findeks_score")
-	private int minFindeksSCore;
+	private int minFindeksScore;
 	
 	
 	@OneToMany(mappedBy = "car")

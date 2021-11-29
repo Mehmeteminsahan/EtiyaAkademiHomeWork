@@ -48,5 +48,12 @@ public class UserManager implements UserService{
 		UserSearchListDto userSearchListDto = modelMapperService.forDto().map(user, UserSearchListDto.class);
 		return new SuccessDataResult<UserSearchListDto>(userSearchListDto);
 	}
+	@Override
+	public Result existsById(int userId) {
+		if(!this.userDao.existsById(userId)) {
+			return new ErrorResult("user bulunamadı");
+		}
+		return new SuccessResult();
+	}
 
 }

@@ -13,5 +13,6 @@ public interface MaintenanceDao extends JpaRepository<Maintenance, Integer> {
 			+ "(c.id, m.returnDate) " 
 			+ 	"From Car c Inner Join c.maintenances m Where c.id=:carId and m.returnDate is null")
 	MaintenanceDto getByCarIdWhereReturnDateIsNull(int carId);
-	
+
+	boolean existsById(int maintenanceId);
 }

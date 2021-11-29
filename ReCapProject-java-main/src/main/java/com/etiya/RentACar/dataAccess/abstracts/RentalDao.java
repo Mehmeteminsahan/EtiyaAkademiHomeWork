@@ -19,7 +19,8 @@ public interface RentalDao extends JpaRepository<Rental, Integer>{
 			+"From Rental r Inner Join r.car c Where r.id=:rentalId")
 	 RentalDetail getRentalDetails(int rentalId);
 	
-	
+
+	boolean existsById(int rentalId);
 	@Query("Select new com.etiya.RentACar.business.dtos.MaintenanceDto"
 			+ "(c.id, m.returnDate) " 
 			+ 	"From Car c Inner Join c.maintenances m Where c.id=:carId and m.returnDate is null")

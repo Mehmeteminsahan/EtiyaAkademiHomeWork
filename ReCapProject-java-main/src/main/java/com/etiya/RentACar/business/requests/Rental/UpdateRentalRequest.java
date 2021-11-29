@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class UpdateRentalRequest {
 	
 	@NotNull
-	private int id;
+	private int rentalId;
 	
 	@NotNull
 	private int carId;

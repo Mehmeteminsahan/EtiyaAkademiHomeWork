@@ -33,6 +33,6 @@ public class CreateCreditCardRequest {
 	private String cvv;
 	
 	@NotNull
-	private int individualCustomerId;
+	private int userId;
 
 }

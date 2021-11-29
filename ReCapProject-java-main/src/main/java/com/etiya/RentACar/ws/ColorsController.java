@@ -22,7 +22,7 @@ import com.etiya.RentACar.entites.Color;
 @RestController
 @RequestMapping("api/colors")
 public class ColorsController {
-		
+
 	private ColorService colorService;
 
 	@Autowired
@@ -30,39 +30,26 @@ public class ColorsController {
 		super();
 		this.colorService = colorService;
 	}
-	
+
 	@GetMapping("getAll")
 	public DataResult<List<Color>> getAll() {
 		return this.colorService.getAll();
 	}
-	
-	@PostMapping("add")	
+
+	@PostMapping("add")
 	public Result add(@RequestBody CreateColorRequest createColorRequest) {
 		return this.colorService.add(createColorRequest);
-		
+
+	}
+
+	@PutMapping("update")
+	public Result update(@RequestBody UpdateColorRequest updateColorRequest) {
+		return this.colorService.update(updateColorRequest);
 	}
 
 	@DeleteMapping("delete")
 	public Result delete(@RequestBody DeleteColorRequest deleteColorRequest) {
 		return this.colorService.delete(deleteColorRequest);
 	}
-	
-	@PutMapping("update")
-	public Result update(@RequestBody UpdateColorRequest updateColorRequest) {
-		return this.colorService.update(updateColorRequest);
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	 
-	
-	
-	
-	
-	
+
 }

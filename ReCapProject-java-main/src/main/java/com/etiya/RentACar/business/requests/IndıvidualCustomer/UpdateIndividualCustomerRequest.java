@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateIndividualCustomerRequest {
-	private int id;
+	private int userId;
 	private String firstName;
 	private String lastName;
 	private String email;

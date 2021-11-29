@@ -39,7 +39,8 @@ public class RentalManager implements RentalService {
 	private UserService userService;
 
 	@Autowired
-	private RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,CarService carService,UserService userService) {
+	private RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService, CarService carService,
+			UserService userService) {
 		super();
 		this.rentalDao = rentalDao;
 		this.modelMapperService = modelMapperService;
@@ -59,9 +60,12 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
-		Result result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
-				checkCompareUserAndCarFindeksScore(createRentalRequest.getIndividualCustomerId(),createRentalRequest.getCarId()),
-						checkCarIsMaintenance(createRentalRequest.getCarId()));
+		Result result = BusinessRules.run(checkCarExists(createRentalRequest.getCarId()),
+				checkCarIsReturned(createRentalRequest.getCarId()),
+				checkUserExists(createRentalRequest.getIndividualCustomerId()),
+				checkCompareUserAndCarFindeksScore(createRentalRequest.getIndividualCustomerId(),
+						createRentalRequest.getCarId()),
+				checkCarIsMaintenance(createRentalRequest.getCarId()));
 		if (result != null) {
 			return result;
 		}
@@ -72,6 +76,10 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) {
+		Result result = BusinessRules.run(checkRentalExists(deleteRentalRequest.getRentalId()));
+		if (result != null) {
+			return result;
+		}
 		Rental rental = modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
 		rentalDao.delete(rental);
 		return new SuccessResult("Araba silindi");
@@ -79,22 +87,31 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
-		Rental rental = modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
-        RentalDetail result = this.rentalDao.getRentalDetails(updateRentalRequest.getId());
-        rental.setRentDate(result.getRentDate());
-        this.rentalDao.save(rental);
-        return new SuccessResult("Updated");
+		Result resultCheck = BusinessRules.run(checkCarExists(updateRentalRequest.getCarId()),
+				checkCarIsReturned(updateRentalRequest.getCarId()),
+				checkRentalExists(updateRentalRequest.getRentalId()),
+				checkUserExists(updateRentalRequest.getIndividualCustomerId()),
+				checkCarIsMaintenance(updateRentalRequest.getCarId()));
+		if (resultCheck != null) {
+			return resultCheck;
+		}
 		
+		Rental rental = modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
+		RentalDetail result = this.rentalDao.getRentalDetails(updateRentalRequest.getRentalId());
+		rental.setRentDate(result.getRentDate());
+		this.rentalDao.save(rental);
+		return new SuccessResult("Updated");
+
 	}
 
-	public Result checkCarIsReturned(int carId) {
+	public Result checkCarIsReturned(int carId) {// burayı kontrol et updete etmıoyor 
 		RentalSearchListDto rental = this.rentalDao.getByCarIdWhereReturnDateIsNull(carId);
 		if (rental != null) {
 			return new ErrorResult("Araç şuan da müsait değil.");
 		}
 		return new SuccessResult();
 	}
-	
+
 	private Result checkCarIsMaintenance(int carId) {
 		MaintenanceDto maintenanceDto = this.rentalDao.getByCarIdWhereMaintenanceReturnDateIsNull(carId);
 		if (maintenanceDto != null) {
@@ -102,20 +119,33 @@ public class RentalManager implements RentalService {
 		}
 		return new SuccessResult();
 	}
-	
-	/*@Override
-	public DataResult<RentalSearchListDtos> getById(int id) {
-			Maintenance maintenance = this.maintenanceDao.findById(maintenanceId).get();
-			MaintenanceDto response = this.modelMapperService.forDto().map(maintenance, MaintenanceDto.class);
-		return new SuccessDataResult<MaintenanceDto>(response);
-	}*/
-	
-	private Result checkCompareUserAndCarFindeksScore(int userId ,int carId) {
+
+	private Result checkCompareUserAndCarFindeksScore(int userId, int carId) {
 		DataResult<CarSearchListDto> car = this.carService.getById(carId);
-		
 		int user = this.userService.getById(userId).getData().getFindeksScore();
-		if(car.getData().getMinFindeksScore() >= user) {
+		if (car.getData().getMinFindeksScore() >= user) {
 			return new ErrorResult("findeksScore not insufficient ");
+		}
+		return new SuccessResult();
+	}
+
+	private Result checkUserExists(int userId) {
+		if(!this.userService.existsById(userId).isSuccess()) {
+			return new ErrorResult("user bulunamadı");
+		}
+		return new SuccessResult();
+	}
+	
+	private Result checkRentalExists(int rentalId) {
+		if(!this.rentalDao.existsById(rentalId)) {
+			return new ErrorResult("rental bulunamadı");
+		}
+		return new SuccessResult();
+	}
+	
+	private Result checkCarExists(int carId) {
+		if (!this.carService.checkCarExists(carId).isSuccess()) {
+			return new ErrorResult("araç bulunamadı");
 		}
 		return new SuccessResult();
 	}

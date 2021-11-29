@@ -18,16 +18,19 @@ import com.etiya.RentACar.core.utilities.results.Result;
 public class AuthController {
 
 	private AuthService authService;
+
 	@Autowired
 	public AuthController(AuthService authService) {
 		super();
 		this.authService = authService;
 	}
-	
+
 	@PostMapping("/individualCustomerRegister")
-	Result individualCustomerRegister(@RequestBody @Valid RegisterIndividualCustomerRequest registerIndividualCustomerRequest){
+	Result individualCustomerRegister(
+			@RequestBody @Valid RegisterIndividualCustomerRequest registerIndividualCustomerRequest) {
 		return this.authService.individualCustomerRegister(registerIndividualCustomerRequest);
 	}
+
 	@PostMapping("/login")
 	Result login(@Valid @RequestBody LoginRequest loginRequest) {
 		return this.authService.login(loginRequest);

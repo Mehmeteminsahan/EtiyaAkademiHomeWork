@@ -31,7 +31,8 @@ public interface CarService {
 	DataResult<List<CarDetail>> getCarByColorId(int colorId);
 	
 	DataResult<CarSearchListDto> getById(int id);
-	DataResult<CarDetailDto> getByCarAllDetail(int carId);
+	DataResult<List<CarDetailDto>> getByCarAllDetail(int carId);
+	Result checkCarExists(int carId);
 	
 	
 }

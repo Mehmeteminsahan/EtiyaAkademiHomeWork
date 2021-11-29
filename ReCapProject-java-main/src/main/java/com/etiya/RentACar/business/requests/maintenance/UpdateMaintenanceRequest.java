@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateMaintenanceRequest {
 
-	private int id;
+	private int maintenanceId;
 	
 	private int carId;
 

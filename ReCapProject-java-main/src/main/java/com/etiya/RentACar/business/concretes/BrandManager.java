@@ -20,11 +20,11 @@ import com.etiya.RentACar.dataAccess.abstracts.BrandDao;
 import com.etiya.RentACar.entites.Brand;
 
 @Service
-public class BrandManager implements BrandService{
+public class BrandManager implements BrandService {
 
 	private BrandDao brandDao;
 	private ModelMapperService modelMapperService;
-	
+
 	@Autowired
 	private BrandManager(BrandDao brandDao, ModelMapperService modelMapperService) {
 		super();
@@ -38,40 +38,57 @@ public class BrandManager implements BrandService{
 		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll(), "Markalar listelendi");
 	}
 
-
-
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
 		Result result = BusinessRules.run(this.checkBrandByBrandName(createBrandRequest.getBrandName()));
-        if (result != null) {
-            return result;
-        }
-		Brand brand2=this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
+		if (result != null) {
+			return result;
+		}
+		Brand brand2 = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
 		this.brandDao.save(brand2);
 		return new SuccessResult();
 	}
 
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
-		Brand brand=this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
+		Result result = BusinessRules.run(existsByBrand_Id(updateBrandRequest.getBrandId()));
+
+		if (result != null) {
+			return result;
+		}
+		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 		this.brandDao.save(brand);
 		return new SuccessResult();
-		
+
 	}
 
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
-		Brand brand=this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
+		Result result = BusinessRules.run(existsByBrand_Id(deleteBrandRequest.getBrandId()));
+
+		if (result != null) {
+			return result;
+		}
+		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandDao.delete(brand);
 		return new SuccessResult();
 	}
+
 	private Result checkBrandByBrandName(String brandName) {
 
-        if (this.brandDao.existsByBrandName(brandName)) {
-            return new ErrorResult("Bu Marka Mevcut");
-        }
-        return new SuccessResult();
-    }
+		if (this.brandDao.existsByBrandName(brandName)) {
+			return new ErrorResult("Bu Marka Mevcut");
+		}
+		return new SuccessResult();
+	}
 
+	@Override
+	public Result existsByBrand_Id(int brandId) {
+
+		if (!this.brandDao.existsById(brandId)) {
+			return new ErrorResult("Brand Bulunamadı");
+		}
+		return new SuccessResult();
+	}
 
 }

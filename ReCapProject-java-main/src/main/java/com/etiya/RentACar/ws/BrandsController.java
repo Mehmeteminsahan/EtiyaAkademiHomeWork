@@ -29,22 +29,25 @@ public class BrandsController {
 		super();
 		this.brandService = brandService;
 	}
-	
+
 	@GetMapping("getAll")
-	public DataResult<List<Brand>>  getAll(){
+	public DataResult<List<Brand>> getAll() {
 		return brandService.getAll();
 	}
+
 	@PostMapping("add")
 	public Result add(@RequestBody CreateBrandRequest createBrandRequest) {
 		return this.brandService.add(createBrandRequest);
 	}
+
 	@PutMapping("update")
 	public Result update(@RequestBody UpdateBrandRequest updateBrandRequest) {
 		return this.brandService.update(updateBrandRequest);
 	}
+
 	@DeleteMapping("delete")
 	public Result delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
 		return this.brandService.delete(deleteBrandRequest);
 	}
-	
+
 }

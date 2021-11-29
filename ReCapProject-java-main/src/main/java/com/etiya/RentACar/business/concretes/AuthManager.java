@@ -36,6 +36,8 @@ public class AuthManager implements AuthService {
 	
 	@Override
 	public Result individualCustomerRegister(RegisterIndividualCustomerRequest registerIndividualCustomerRequest) {
+		
+		
 		CreateIndividualCustomerRequest result = modelMapperService.forRequest()
 				.map(registerIndividualCustomerRequest, CreateIndividualCustomerRequest.class);
 		Random rand=new Random();
@@ -64,6 +66,7 @@ public class AuthManager implements AuthService {
 		}
 		return new SuccessResult();
 	}
+	
 	private Result checkCustomerPasswordByPasswordIsMatched(LoginRequest loginRequest) {
 
 		if (checkCustomerEmailByEmailIsMatched(loginRequest).isSuccess()) {
@@ -72,6 +75,13 @@ public class AuthManager implements AuthService {
 					.equals(loginRequest.getPassword())) {
 				return new ErrorResult("Password hatalı");
 			}
+		}
+		return new SuccessResult();
+	}
+	
+	private Result checkUserExists(int userId) {
+		if(!this.userService.existsById(userId).isSuccess()) {
+			return new ErrorResult("kullanıcı bulunamadı");
 		}
 		return new SuccessResult();
 	}

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.RentACar.business.abstracts.CreditCardService;
+import com.etiya.RentACar.business.abstracts.UserService;
 import com.etiya.RentACar.business.dtos.CreditCardDto;
 import com.etiya.RentACar.business.requests.creditCard.CreateCreditCardRequest;
 import com.etiya.RentACar.business.requests.creditCard.DeleteCreditCardRequest;
@@ -29,12 +30,14 @@ public class CreditCardManager implements CreditCardService{
 
 	private CreditCardDao creditCardDao;
 	private ModelMapperService modelMapperService;
+	private UserService userService;
 	
 	@Autowired
-	public CreditCardManager(CreditCardDao creditCardDao, ModelMapperService modelMapperService) {
+	public CreditCardManager(CreditCardDao creditCardDao, ModelMapperService modelMapperService,UserService userService) {
 		super();
 		this.creditCardDao = creditCardDao;
 		this.modelMapperService = modelMapperService;
+		this.userService=userService;
 	}
 
 	@Override
@@ -47,8 +50,11 @@ public class CreditCardManager implements CreditCardService{
 
 	@Override
 	public Result add(CreateCreditCardRequest createCreditCardRequest) {
+		
+		
 		Result result = BusinessRules.run(checkCreditCardFormat(createCreditCardRequest.getCardNumber()),
-				checkCardNumberByCardNumber(createCreditCardRequest.getCardNumber()));
+				checkCardNumberByCardNumber(createCreditCardRequest.getCardNumber())
+				,checkUserExists(createCreditCardRequest.getUserId()));
 		if(result!=null) {
 			return result;
 		}
@@ -59,6 +65,13 @@ public class CreditCardManager implements CreditCardService{
 
 	@Override
 	public Result update(UpdateCreditCardRequest updateCreditCardRequest) {
+		Result resultCheck = BusinessRules.run(checkCreditCardFormat(updateCreditCardRequest.getCardNumber()),
+				checkCardNumberByCardNumber(updateCreditCardRequest.getCardNumber()),
+				chechCredidCardExists(updateCreditCardRequest.getCreditCardId())
+				,checkUserExists(updateCreditCardRequest.getUserId()));
+		if(resultCheck!=null) {
+			return resultCheck;
+		}
 		CreditCard result = modelMapperService.forRequest().map(updateCreditCardRequest, CreditCard.class);
 		this.creditCardDao.save(result);
 		return new SuccessResult();
@@ -66,7 +79,10 @@ public class CreditCardManager implements CreditCardService{
 
 	@Override
 	public Result delete(DeleteCreditCardRequest deleteCreditCardRequest) {
-		//CreditCard result = modelMapperService.forRequest().map(deleteCarRequest, CreditCard.class);
+		Result result = BusinessRules.run(chechCredidCardExists(deleteCreditCardRequest.getCreditCardId()));
+		if(result!=null) {
+			return result;
+		}
 		this.creditCardDao.deleteById(deleteCreditCardRequest.getCreditCardId());
 		return new SuccessResult();
 	}
@@ -89,6 +105,21 @@ public class CreditCardManager implements CreditCardService{
 
 		if (this.creditCardDao.existsByCardNumber(cardNumber)) {
 			return new ErrorResult("Bu kart numarası kayıtlı");
+		}
+		return new SuccessResult();
+	}
+	
+	private Result chechCredidCardExists(int credidCard) {
+		if(!this.creditCardDao.existsById(credidCard)) {
+			return new ErrorResult("kredi kartı bulunamadı");
+		}
+		return new SuccessResult();
+		
+	}
+	
+	private Result checkUserExists(int userId) {
+		if(!userService.existsById(userId).isSuccess()) {
+			return new ErrorResult("user Bulunamadı");
 		}
 		return new SuccessResult();
 	}

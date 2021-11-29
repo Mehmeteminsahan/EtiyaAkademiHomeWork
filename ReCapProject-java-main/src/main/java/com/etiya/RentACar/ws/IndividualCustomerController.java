@@ -38,11 +38,6 @@ public class IndividualCustomerController {
 		return this.individualCustomerService.getAll();
 	}
 	
-	@PostMapping("add")	
-	public Result add(@RequestBody CreateIndividualCustomerRequest createIndividualCustomerRequest) {
-		return this.individualCustomerService.add(createIndividualCustomerRequest);
-		
-	}
 	@PutMapping("update")
 	public Result update(@RequestBody @Valid UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
 		return this.individualCustomerService.update(updateIndividualCustomerRequest);

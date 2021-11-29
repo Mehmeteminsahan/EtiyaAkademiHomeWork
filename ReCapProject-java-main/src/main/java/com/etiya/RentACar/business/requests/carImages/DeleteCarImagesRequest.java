@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class DeleteCarImagesRequest {
 	
 
-	private int id;
+	private int imageId;
 }

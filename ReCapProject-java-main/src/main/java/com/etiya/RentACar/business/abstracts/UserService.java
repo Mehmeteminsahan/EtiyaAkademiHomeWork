@@ -9,4 +9,6 @@ public interface UserService {
 	DataResult<UserSearchListDto> getByEmail(String email);
 	Result existsByEmail(String email);
 	DataResult<UserSearchListDto> getById(int id); 
+	
+	Result existsById(int userId);
 }
