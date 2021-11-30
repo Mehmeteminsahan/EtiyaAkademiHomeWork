@@ -89,7 +89,7 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public Result update(UpdateCarRequest updateCarRequest) {// ıd den dolayı muhtemelen yeniden eklıyor
+	public Result update(UpdateCarRequest updateCarRequest) {
 		Result result = BusinessRules.run(
 				checkBrandExists(updateCarRequest.getBrandId())
 				,checkColorExists(updateCarRequest.getColorId()),
@@ -104,7 +104,7 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public Result delete(DeleteCarRequest deleteCarRequest) {//kiradan dondu mu ve bakımda mı kontrolu yapılıcak brand ve color da bak
+	public Result delete(DeleteCarRequest deleteCarRequest) {
 		Result result = BusinessRules.run(checkCarExists(deleteCarRequest.getCarId()));
 
 		if (result != null) {

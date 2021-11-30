@@ -57,7 +57,7 @@ public class MaintenanceManager implements MaintenanceService {
 	@Override
 	public Result add(CreateMaintenanceRequest createMaintenanceRequest) {
 		Result result = BusinessRules.run(checkCarExists(createMaintenanceRequest.getCarId()),
-				checkByCarReturnFromRental(createMaintenanceRequest.getCarId()));
+				checkCarReturnFromRental(createMaintenanceRequest.getCarId()));
 
 		if (result != null) {
 			return result;
@@ -69,10 +69,10 @@ public class MaintenanceManager implements MaintenanceService {
 	}
 
 	@Override
-	public Result update(UpdateMaintenanceRequest updateMaintenanceRequest) {//yeni ekledi 
+	public Result update(UpdateMaintenanceRequest updateMaintenanceRequest) {
 		Result result = BusinessRules.run(checkMaintenanceExists(updateMaintenanceRequest.getMaintenanceId()),
 				checkCarExists(updateMaintenanceRequest.getCarId()),
-				checkByCarReturnFromRental(updateMaintenanceRequest.getCarId()));
+				checkCarReturnFromRental(updateMaintenanceRequest.getCarId()));
 
 		if (result != null) {
 			return result;
@@ -80,7 +80,6 @@ public class MaintenanceManager implements MaintenanceService {
 
 		Maintenance maintenance = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
 
-		// MaintenanceDto result = getById(updateMaintenanceRequest.getId()).getData();
 		this.maintenanceDao.save(maintenance);
 		return new SuccessResult("Araç Bakımı güncellendi");
 	}
@@ -106,7 +105,7 @@ public class MaintenanceManager implements MaintenanceService {
 	}
 
 	// Kiralanmış araç bakıma gidemez
-	private Result checkByCarReturnFromRental(int carId) {
+	private Result checkCarReturnFromRental(int carId) {
 		if (!this.rentalService.checkCarIsReturned(carId).isSuccess()) {
 			return new ErrorResult("Araç şuan da bakıma gidemez.");
 		}

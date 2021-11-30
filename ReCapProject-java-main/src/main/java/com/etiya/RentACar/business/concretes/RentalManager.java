@@ -104,7 +104,7 @@ public class RentalManager implements RentalService {
 
 	}
 
-	public Result checkCarIsReturned(int carId) {// burayı kontrol et updete etmıoyor 
+	public Result checkCarIsReturned(int carId) {
 		RentalSearchListDto rental = this.rentalDao.getByCarIdWhereReturnDateIsNull(carId);
 		if (rental != null) {
 			return new ErrorResult("Araç şuan da müsait değil.");
